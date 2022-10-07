@@ -1,6 +1,9 @@
 package model
 
-import "time"
+import (
+	"github.com/dgrijalva/jwt-go"
+	"time"
+)
 
 // User 表
 type User struct {
@@ -12,6 +15,14 @@ type User struct {
 	Email  string    `json:"email"`  // 邮箱
 	Status int       `json:"status"` // 账号状态
 	Ctime  time.Time `json:"ctime"`  // 修改时间
+}
+
+// UserClaims token携带的数据
+type UserClaims struct {
+	Id   int    `json:"id"`
+	Num  string `json:"num"`
+	Name string `json:"name"`
+	jwt.StandardClaims
 }
 
 // UserLogin 用户登录

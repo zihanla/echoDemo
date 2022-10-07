@@ -26,7 +26,7 @@
             <form class="layui-form">
                 <div class="layui-form-item">
                     <label class="login-icon"><i class="layui-icon">&#xe612;</i></label>
-                    <input type="text" name="num" lay-verify="required" autocomplete="off" placeholder="账号/已认证邮箱" class="layui-input">
+                    <input type="text" name="num" value="admin" lay-verify="required" autocomplete="off" placeholder="账号/已认证邮箱" class="layui-input">
                 </div>
                 <div class="layui-form-item">
                     <label class="login-icon">
@@ -46,6 +46,7 @@
     </div>
 </body>
 <script src="/static/layui/layui.js"></script>
+<script src="/static/js/md5.min.js"></script>
 <script>
     layui.use(['layer', 'form'], function() {
         var layer = layui.layer;
@@ -56,6 +57,9 @@
             // layer.msg(JSON.stringify(data.field));
             // window.location.href = 'index.html'
             // 提交从表单中获取的数据到服务端
+            // 用md5的方式给 密码加密
+            data.field.pass = md5(data.field.pass)
+            console.log(data.field.pass)
             $.ajax({
                 url:"/api/login",
                 type:"post",
@@ -66,7 +70,9 @@
                     // 回调函数，操作从服务端的响应内容
                     // console.log(resp)
                     if (resp.code == 200) {
-                        window.location.href = '/views/index.html'
+                        // 在浏览器保存服务端 返回的用户登录信息
+                        localStorage.setItem("token",resp.data)
+                        window.location.href = '/admin/index.html'
                     } else {
                         layer.msg(resp.msg)
                     }

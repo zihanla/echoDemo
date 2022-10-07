@@ -2,6 +2,9 @@ package control
 
 import (
 	"demo_1/model"
+	"time"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo"
 	"github.com/zxysilent/utils"
 )
@@ -24,7 +27,22 @@ func UserLogin(ctx echo.Context) error {
 	if mod.Pass != ipt.Pass {
 		return ctx.JSON(utils.ErrIpt("密码错误"))
 	}
-	return ctx.JSON(utils.Succ("登录成功", mod))
+
+	claims := model.UserClaims{
+		Id:   mod.Id,
+		Num:  mod.Num,
+		Name: mod.Name,
+		StandardClaims: jwt.StandardClaims{
+			// 过期时间 = 现在时间 + 两小时 // Unix 时间戳 从计算机建立开始到现在
+			ExpiresAt: time.Now().Add(2 * time.Hour).Unix(),
+		},
+	}
+	// 加密算法 加密数据
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	ss, err := token.SignedString([]byte("123"))
+	//fmt.Printf("%v %v", ss, err)
+
+	return ctx.JSON(utils.Succ("登录成功", ss))
 }
 
 type login struct {

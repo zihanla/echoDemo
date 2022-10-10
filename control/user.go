@@ -27,7 +27,7 @@ func UserLogin(ctx echo.Context) error {
 	if mod.Pass != ipt.Pass {
 		return ctx.JSON(utils.ErrIpt("密码错误"))
 	}
-
+	// 根据后台数据 给用户信息加密 再封装
 	claims := model.UserClaims{
 		Id:   mod.Id,
 		Num:  mod.Num,

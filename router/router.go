@@ -11,6 +11,7 @@ var debug = true
 
 func Run() {
 	app := echo.New()
+	// 用于模板渲染
 	app.Renderer = renderer
 	// 静态文件访问
 	app.Static("/static", "static")
@@ -18,10 +19,15 @@ func Run() {
 	// 静态页面
 	app.GET("/", control.Index)
 	app.GET("/login", control.LoginView)
+
 	// admin分组 设置经过中间件的页面
 	adm := app.Group("/admin", ServerHeader)
-	adm.GET("/index.html", control.AdmView)
-	// 方法
-	app.POST("/api/login", control.UserLogin) // 用户登录
+	AdmRouter(adm)
+
+	// api 常规操作 不需要经过的中间验证的数据
+	api := app.Group("/api")
+	ApiRouter(api)
+
+	// 服务端口
 	app.Start(":8080")
 }

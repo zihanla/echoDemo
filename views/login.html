@@ -57,9 +57,9 @@
             // layer.msg(JSON.stringify(data.field));
             // window.location.href = 'index.html'
             // 提交从表单中获取的数据到服务端
-            // 用md5的方式给 密码加密
+            // 用md5的方式给密码 加密
             data.field.pass = md5(data.field.pass)
-            console.log(data.field.pass)
+            // console.log(data.field.pass)
             $.ajax({
                 url:"/api/login",
                 type:"post",
@@ -72,7 +72,7 @@
                     if (resp.code == 200) {
                         // 在浏览器保存服务端 返回的用户登录信息
                         localStorage.setItem("token",resp.data)
-                        window.location.href = '/admin/index.html'
+                        window.location.href = '/views/index.html'
                     } else {
                         layer.msg(resp.msg)
                     }

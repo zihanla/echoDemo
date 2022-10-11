@@ -1,5 +1,7 @@
 package model
 
+import "errors"
+
 // Class 结构体
 type Class struct {
 	Id   int64  `json:"id"`   // id
@@ -35,6 +37,64 @@ func ClassGet(id int64) (*Class, error) {
 	return mod, err
 }
 
-// 添加
-// 修改
-// 删除
+// ClassAdd 添加
+func ClassAdd(mod *Class) error {
+	tx, err := Db.Begin() // 开启事务 保险
+
+	result, err := tx.Exec("insert  into class(`name`,`desc`) values(?,?)", mod.Name, mod.Desc)
+	if err != nil {
+		// 回滚 ctrl + z 撤回
+		tx.Rollback()
+		return err
+	}
+	rows, _ := result.RowsAffected()
+	if rows < 1 {
+		// 回滚
+		tx.Rollback()
+		return errors.New("rows affected < 1")
+	}
+	// 提交 保存正确的操作
+	tx.Commit()
+	return nil
+}
+
+// ClassEdit 修改分类
+func ClassEdit(mod *Class) error {
+	tx, err := Db.Begin() // 开启事务 保险
+
+	result, err := tx.Exec("update class set `name`=?,`desc`=? where id=?", mod.Name, mod.Desc, mod.Id)
+	if err != nil {
+		// 回滚 ctrl + z 撤回
+		tx.Rollback()
+		return err
+	}
+	rows, _ := result.RowsAffected()
+	if rows < 1 {
+		// 回滚
+		tx.Rollback()
+		return errors.New("rows affected < 1")
+	}
+	// 提交 保存正确的操作
+	tx.Commit()
+	return nil
+}
+
+// ClassDel 删除选中分类
+func ClassDel(id int64) error {
+	tx, err := Db.Begin() // 开启事务 保险
+	result, err := tx.Exec("delete from class where id =?", id)
+	if err != nil {
+		// 回滚 ctrl + z 撤回
+		tx.Rollback()
+		return err
+	}
+	rows, _ := result.RowsAffected()
+	if rows < 1 {
+		// 回滚
+		tx.Rollback()
+		return errors.New("rows affected < 1")
+	}
+	// 提交 保存正确的操作
+	tx.Commit()
+	return nil
+}

@@ -3,7 +3,6 @@ package router
 import (
 	"demo_1/model"
 	"io"
-	"log"
 	"text/template"
 
 	"github.com/zxysilent/utils"
@@ -46,7 +45,7 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 		ctx.Response().Header().Set(echo.HeaderServer, "Echo/666")
 		// TODO 还需要解决直接从浏览器中拿去token值
 		tokenString := ctx.FormValue("token")
-		log.Println(tokenString)
+		//log.Println(tokenString) // 打印token值
 		claims := model.UserClaims{}
 		token, err := jwt.ParseWithClaims(tokenString, &claims, func(token *jwt.Token) (interface{}, error) {
 			return []byte("123"), nil
@@ -57,7 +56,7 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 			return next(ctx)
 		} else {
 			// 验证失败
-			return ctx.JSON(utils.ErrToken("验证失败"))
+			return ctx.JSON(utils.ErrToken("token 验证失败"))
 		}
 	}
 }

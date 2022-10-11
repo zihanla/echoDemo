@@ -17,5 +17,9 @@ func init() {
 		// 打印致命错误 先输出log 再退出程序
 		log.Fatalln(err.Error())
 	}
+	// 测试是否正常连接数据库
+	if err = db.Ping(); err != nil {
+		log.Fatalln(err.Error())
+	}
 	Db = db
 }

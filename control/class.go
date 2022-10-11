@@ -44,3 +44,70 @@ func ClassPage(ctx echo.Context) error {
 	}
 	return ctx.JSON(utils.Page("分类分页数据", mods, count))
 }
+
+// ClassAdd 添加分类
+func ClassAdd(ctx echo.Context) error {
+	// 创建class容器对象
+	ipt := &model.Class{}
+	// 接收客户端传过来的值
+	err := ctx.Bind(ipt)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	if ipt.Name == "" {
+		return ctx.JSON(utils.ErrIpt("分类名称不能为空"))
+	}
+	// 把数据存入 数据库
+	err = model.ClassAdd(ipt)
+	if err != nil {
+		return ctx.JSON(utils.Fail("添加失败", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("添加成功"))
+}
+
+// ClassEdit 添加分类
+func ClassEdit(ctx echo.Context) error {
+	// 创建class容器对象
+	ipt := &model.Class{}
+	// 接收客户端传过来的值
+	err := ctx.Bind(ipt)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	if ipt.Name == "" {
+		return ctx.JSON(utils.ErrIpt("分类名称不能为空"))
+	}
+	// 把数据存入 数据库
+	err = model.ClassEdit(ipt)
+	if err != nil {
+		return ctx.JSON(utils.Fail("修改失败", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("修改成功"))
+}
+
+// ClassDel 删除分类
+func ClassDel(ctx echo.Context) error {
+	// 通过param方法获取浏览器中的path路径参数 并把获取到的值转换为int64 类型
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	err = model.ClassDel(id)
+	if err != nil {
+		return ctx.JSON(utils.Fail("删除失败", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("删除成功"))
+}
+
+// ClassGet 查询分类
+func ClassGet(ctx echo.Context) error {
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	mod, err := model.ClassGet(id)
+	if err != nil {
+		return ctx.JSON(utils.ErrOpt("未查询到数据", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("分类数据", mod))
+}

@@ -19,7 +19,7 @@
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="https://blog.zxysilent.com/logo.png" class="layui-nav-img"> zxysilent
+                        <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img"> 涵有闲
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">基本资料</a></dd>
@@ -60,7 +60,7 @@
         <div class="layui-body">
             <!-- 内容主体区域 -->
             <div style="padding: 15px;">
-                <form class="layui-form" action="">
+                <form class="layui-form">
                     <div class="layui-form-item">
                         <label class="layui-form-label">类别</label>
                         <div class="layui-input-inline">
@@ -70,7 +70,7 @@
                     <div class="layui-form-item">
                         <label class="layui-form-label">描述信息</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="des" placeholder="请输入描述信息" autocomplete="off" class="layui-input">
+                            <input type="text" name="desc" placeholder="请输入描述信息" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-form-mid layui-word-aux">辅助文字</div>
                     </div>
@@ -84,19 +84,36 @@
             </div>
         </div>
     </div>
-    <script src="/static/layui/layui.js"></script>
+    <script src="/static/layui/layui.all.js"></script>
     <script>
         //JavaScript代码区域
-        layui.use(['element', 'form'], function() {
             var element = layui.element;
             var form = layui.form;
-
+            var $ = layui.jquery; // 引用layui中的jq
             //监听提交
             form.on('submit(commit)', function(data) {
-                layer.msg(JSON.stringify(data.field));
+                // layer.msg(JSON.stringify(data.field));
+                $.ajax({
+                    url:"/admin/class/add?token=" + localStorage.getItem("token"),
+                    data:JSON.stringify(data.field), // 把对象变成 json格式
+                    type:"post", // 请求类型
+                    contentType:"application/json", // 发送数据格式
+                    dataType:"json", // 接收服务端的数据格式
+                    success: function (resp) {
+                        // layer.msg(JSON.stringify(resp))
+                        if (resp.code == 200) {
+                            layer.msg("添加成功",function () {
+                                location.href = "/views/class-list.html"
+                            })
+                        } else {
+                            layer.msg(resp.msg)
+                            console.log(resp)
+                        }
+                    }
+                })
                 return false;
             });
-        });
+
     </script>
 </body>
 

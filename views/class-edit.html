@@ -19,7 +19,7 @@
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="https://blog.zxysilent.com/logo.png" class="layui-nav-img"> zxysilent
+                        <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img"> 涵有闲
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">基本资料</a></dd>
@@ -62,41 +62,86 @@
             <div style="padding: 15px;">
                 <form class="layui-form" action="">
                     <div class="layui-form-item">
+                        <input type="hidden" name="id" id="id">
                         <label class="layui-form-label">类别</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="name" lay-verify="required" placeholder="请输入类别" autocomplete="off" class="layui-input">
+                            <input type="text" name="name" id="name" lay-verify="required" placeholder="请输入类别" autocomplete="off" class="layui-input">
                         </div>
                     </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">描述信息</label>
                         <div class="layui-input-inline">
-                            <input type="text" name="des" placeholder="请输入描述信息" autocomplete="off" class="layui-input">
+                            <input type="text" name="desc" id="desc" placeholder="请输入描述信息" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-form-mid layui-word-aux">辅助文字</div>
                     </div>
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <button class="layui-btn" lay-submit lay-filter="commit">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                            <button  class="layui-btn layui-btn-primary" lay-submit lay-filter="rest" >重置</button>
+                            <button  class="layui-btn layui-btn-normal" lay-submit lay-filter="back" >返回</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
-    <script src="/static/layui/layui.js"></script>
+    <script src="/static/layui/layui.all.js"></script>
     <script>
         //JavaScript代码区域
-        layui.use(['element', 'form'], function() {
             var element = layui.element;
             var form = layui.form;
-
+            var $ = layui.jquery;
+            var layer = layui.layer;
+            // 拿到指定id的分类信息
+            function init() {
+                // ?id=100 替换指定信息后的值 拿到id
+                var id = location.search.replace("?id=","")
+                $.get("/api/class/get/" + id,
+                    {},
+                    function (resp){
+                        if (resp.code == 200) {
+                            $("#id").val(resp.data.id)
+                            $("#name").val(resp.data.name)
+                            $("#desc").val(resp.data.desc)
+                        } else {
+                            layer.msg(resp.msg)
+                            console.log(resp)
+                        }
+                    },"json")
+            }
+            init();
             //监听提交
             form.on('submit(commit)', function(data) {
-                layer.msg(JSON.stringify(data.field));
+                // layer.msg(JSON.stringify(data.field));
+                data.field.id = Number(data.field.id)
+                $.ajax({
+                    url:"/admin/class/edit?token=" + localStorage.getItem("token"),
+                    type:"post",
+                    data:JSON.stringify(data.field),
+                    contentType:"application/json",
+                    dataType:"json",
+                    success: function (resp) {
+                        if (resp.code == 200) {
+                            layer.msg("修改成功",{ icon: 1 },function (){
+                                ///
+                            });
+                        } else {
+                            layer.msg(resp.msg)
+                            console.log(resp)
+                        }
+                    }
+                })
                 return false;
             });
-        });
+            form.on('submit(rest)', function() {
+                location.reload();
+                return false;
+            })
+            form.on('submit(back)', function() {
+                location.href = "/views/class-list.html"
+                return false;
+            })
     </script>
 </body>
 

@@ -2,6 +2,7 @@ package control
 
 import (
 	"demo_1/model"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
@@ -43,6 +44,94 @@ func UserLogin(ctx echo.Context) error {
 	//fmt.Printf("%v %v", ss, err)
 
 	return ctx.JSON(utils.Succ("登录成功", ss))
+}
+
+// UserPage 用户分页
+func UserPage(ctx echo.Context) error {
+	// 创建一个容器装前端请求过来的数据
+	ipt := Page{}
+	// 获取前端发送过来的数据
+	err := ctx.Bind(&ipt)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	// 判断前端的传过来的值
+	if ipt.Pi < 1 {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	if ipt.Ps < 1 || ipt.Ps > 50 {
+		// 如果分页大小 小于1或大于50 就赋值分页大小为6
+		ipt.Ps = 6
+	}
+	// 判断用户总数
+	count := model.UserCount()
+	if count < 1 {
+		return ctx.JSON(utils.ErrOpt("未查询到数据"))
+	}
+	// 操作数据库拿到前端要的值
+	mods, err := model.UserPage(ipt.Pi, ipt.Ps)
+	if err != nil {
+		return ctx.JSON(utils.ErrOpt("未查询到数据"))
+	}
+	return ctx.JSON(utils.Page("用户数据", mods, count))
+}
+
+// UserDel 删除用户
+func UserDel(ctx echo.Context) error {
+	// 从浏览器path路径中取id值 并转换为int64
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	uid, _ := ctx.Get("uid").(int64) // 用断言转换类型
+
+	// 防止删除自己
+	if uid == id {
+		return ctx.JSON(utils.Fail("不能对自己操作", err.Error()))
+	}
+
+	err = model.UserDel(id)
+	if err != nil {
+		return ctx.JSON(utils.Fail("删除失败", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("删除成功"))
+}
+
+// UserAdd 添加用户
+func UserAdd(ctx echo.Context) error {
+	// 写个容器放前端发送的数据
+	ipt := model.User{}
+	// 接收从前端发送的数据 并装进容器里
+	err := ctx.Bind(&ipt)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	// 验证必要的数据 账号 用户名 密码
+	if ipt.Num == "" {
+		return ctx.JSON(utils.ErrIpt("用户账号不能为空"))
+	}
+	if ipt.Name == "" {
+		return ctx.JSON(utils.ErrIpt("用户名不能为空"))
+	}
+	if ipt.Pass == "" {
+		return ctx.JSON(utils.ErrIpt("密码不能为空"))
+	}
+	if model.UserExist(ipt.Num) {
+		return ctx.JSON(utils.ErrIpt("账号重复"))
+	}
+	// TODO 小时 不准确 有时差
+	ipt.Ctime = time.Now()
+	// 操作数据库存入数据库
+	err = model.UserAdd(&ipt)
+	if err != nil {
+		return ctx.JSON(utils.Fail("添加失败", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("添加成功"))
+}
+
+type Page struct {
+	Pi int `json:"pi"`
+	Ps int `json:"ps"`
 }
 
 type login struct {

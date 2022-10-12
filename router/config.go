@@ -55,6 +55,8 @@ func ServerHeader(next echo.HandlerFunc) echo.HandlerFunc {
 			// 验证成功
 			return next(ctx)
 		} else {
+			// 设置认证 防止自己删除自己 // get获取set的值
+			ctx.Set("uid", claims.Id)
 			// 验证失败
 			return ctx.JSON(utils.ErrToken("token 验证失败"))
 		}

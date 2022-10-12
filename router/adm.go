@@ -11,4 +11,8 @@ func AdmRouter(adm *echo.Group) {
 	adm.POST("/class/add", control.ClassAdd)
 	adm.POST("/class/edit", control.ClassEdit)
 	adm.GET("/class/del/:id", control.ClassDel)
+
+	adm.GET("/user/page", control.UserPage)
+	adm.GET("/user/del/:id", control.UserDel)
+	adm.POST("/user/add", control.UserAdd)
 }

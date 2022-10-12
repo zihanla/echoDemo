@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo">layui 后台布局</div>
+            <!-- 头部区域（可配合layui已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <li class="layui-nav-item"><a href="index.html">控制台</a></li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item">
+                    <a href="javascript:;">
+                        <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img"> 涵有闲
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;">基本资料</a></dd>
+                        <dd><a href="javascript:;">安全设置</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;">退了</a></li>
+            </ul>
+        </div>
+        <div class="layui-side layui-bg-black">
+            <div class="layui-side-scroll">
+                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+                <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                    <li class="layui-nav-item layui-nav-itemed">
+                        <a class="" href="javascript:;">新闻管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="news-list.html">新闻列表</a></dd>
+                            <dd><a href="news-add.html">添加新闻</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">类别管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="class-list.html">类别列表</a></dd>
+                            <dd><a href="class-add.html">添加类别</a></dd>
+                        </dl>
+                    </li>
+                    <li class="layui-nav-item">
+                        <a href="javascript:;">用户管理</a>
+                        <dl class="layui-nav-child">
+                            <dd><a href="user-list.html">用户列表</a></dd>
+                            <dd><a href="user-add.html">添加用户</a></dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">
+                <table class="layui-table">
+                    <colgroup>
+                        <col width="150">
+                        <col width="200">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>id</th>
+                            <th>账号</th>
+                            <th>名称</th>
+                            <th>电话号码</th>
+                            <th>邮箱</th>
+                            <th>时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ctn-user">
+                        <tr>
+                            <td>1</td>
+                            <td>账号</td>
+                            <td>名称</td>
+                            <td>电话号码</td>
+                            <td>邮箱</td>
+                            <td>时间</td>
+                            <td>
+                                <a href="javascript:;" target="_blank" class="layui-btn layui-btn-xs">编辑</a>
+                                <a href="javascript:del(23);" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td id="page" colspan="6" style="text-align:center"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script id="tpl-user" type="text/template">
+        {{each items item index}}
+        <tr>
+            <td>{{item.id}}</td>
+            <td>{{item.num}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.phone}}</td>
+            <td>{{item.email}}</td>
+            <td>{{item.ctime.split("T")[0]}}</td>
+            <td>
+                <a href="javascript:;" target="_blank" class="layui-btn layui-btn-xs">编辑</a>
+                <a href="javascript:del({{item.id}});" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
+            </td>
+        </tr>
+        {{/each}}
+</script>
+    <script src="/static/layui/layui.all.js"></script>
+    <script src="/static/js/template-web.js"></script>
+    <script>
+        //JavaScript代码区域
+            var element = layui.element; // 导航
+            var $ = layui.jquery;
+            var layer = layui.layer; // 弹窗
+            var laypage = layui.laypage // 分页
+
+        function init(pi,ps) {
+            $.get("/admin/user/page",
+                {pi:pi,ps:ps,token:localStorage.getItem("token")},
+                function (resp) {
+                if (resp.code == 200) {
+                    // 渲染模板放到页面上
+                    // 模板 需要渲染的数据
+                    var html = template("tpl-user",resp.data)
+                    // 选择插入模板数据的值
+                    $("#ctn-user").html(html)
+                    laypage.render({
+                        elem: 'page',
+                        count: resp.data.count, //数据总数，从服务端得到
+                        curr: pi,
+                        limit: ps,
+                        layout: ['prev', 'page', 'next', 'skip', 'count','limit'],
+                        jump: function(obj, first) {
+                            //obj包含了当前分页的所有参数，比如：
+                            console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                            console.log(obj.limit); //得到每页显示的条数
+
+                            //首次不执行
+                            if (!first) {
+                                //do something
+                                init(obj.curr,obj.limit)
+                            }
+                        }
+                    });
+                } else {
+                    layer.msg(resp.msg)
+                    console.log(resp)
+                }
+                },"json")
+        }
+        init(1,2)
+
+        function del(id) {
+            // console.log(id)
+            layer.confirm('您确定要删除嘛？', {
+                btn: ['确定','取消'] //按钮
+            }, function(){
+                $.get(
+                    "/admin/user/del/" + id,
+                    {token:localStorage.getItem("token")},
+                    function (resp){
+                        if (resp.code == 200) {
+                            layer.msg("删除成功", {icon: 1},function () {
+                                init(1,2)
+                            })
+                        } else {
+                            layer.msg(resp.msg)
+                            console.log(resp)
+                        }
+                    },"json")
+            });
+        }
+    </script>
+</body>
+
+</html>

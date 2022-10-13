@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>layout 后台大布局 - Layui</title>
+    <link rel="stylesheet" href="/static/layui/css/layui.css">
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">layui 后台布局</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="index.html">控制台</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img">
+                    涵有闲
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">基本资料</a></dd>
+                    <dd><a href="javascript:;">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="javascript:;">退了</a></li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">新闻管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="news-list.html">新闻列表</a></dd>
+                        <dd><a href="news-add.html">添加新闻</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">类别管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="class-list.html">类别列表</a></dd>
+                        <dd><a href="class-add.html">添加类别</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="user-list.html">用户列表</a></dd>
+                        <dd><a href="user-add.html">添加用户</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <!--            <table class="layui-table">-->
+            <!--                <colgroup>-->
+            <!--                    <col width="150">-->
+            <!--                    <col width="200">-->
+            <!--                    <col>-->
+            <!--                </colgroup>-->
+            <!--                <thead>-->
+            <!--                <tr>-->
+            <!--                    <th>id</th>-->
+            <!--                    <th>标题</th>-->
+            <!--                    <th>来源</th>-->
+            <!--                    <th>作者</th>-->
+            <!--                    <th>点击量</th>-->
+            <!--                    <th>更新时间</th>-->
+            <!--                    <th>创建时间</th>-->
+            <!--                    <th>操作</th>-->
+            <!--                </tr>-->
+            <!--                </thead>-->
+            <!--                <tbody>-->
+            <!--                <tr>-->
+            <!--                    <td>1</td>-->
+            <!--                    <td>标题</td>-->
+            <!--                    <td>来源</td>-->
+            <!--                    <td>作者</td>-->
+            <!--                    <td>点击量</td>-->
+            <!--                    <td>更新时间</td>-->
+            <!--                    <td>创建时间</td>-->
+            <!--                    <td>-->
+            <!--                        <a href="javascript:;" target="_blank" class="layui-btn layui-btn-xs">编辑</a>-->
+            <!--                        <a href="javascript:del(23);" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>-->
+            <!--                    </td>-->
+            <!--                </tr>-->
+            <!--                <tr>-->
+            <!--                    <td>2</td>-->
+            <!--                    <td>标题</td>-->
+            <!--                    <td>来源</td>-->
+            <!--                    <td>作者</td>-->
+            <!--                    <td>点击量</td>-->
+            <!--                    <td>更新时间</td>-->
+            <!--                    <td>创建时间</td>-->
+            <!--                    <td>-->
+            <!--                        <a href="javascript:;" target="_blank" class="layui-btn layui-btn-xs">编辑</a>-->
+            <!--                        <a href="javascript:del(23);" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>-->
+            <!--                    </td>-->
+            <!--                </tr>-->
+            <!--                <tr>-->
+            <!--                    <td>3</td>-->
+            <!--                    <td>标题</td>-->
+            <!--                    <td>来源</td>-->
+            <!--                    <td>作者</td>-->
+            <!--                    <td>点击量</td>-->
+            <!--                    <td>更新时间</td>-->
+            <!--                    <td>创建时间</td>-->
+            <!--                    <td>-->
+            <!--                        <a href="javascript:;" target="_blank" class="layui-btn layui-btn-xs">编辑</a>-->
+            <!--                        <a href="javascript:del(23);" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>-->
+            <!--                    </td>-->
+            <!--                </tr>-->
+            <!--                <tfoot>-->
+            <!--                <tr>-->
+            <!--                    <td id="page" colspan="8" style="text-align:center"></td>-->
+            <!--                </tr>-->
+            <!--                </tfoot>-->
+            <!--            </table>-->
+            <table id="demo" lay-filter="test"></table>
+            <script type="text/html" id="barDemo">
+                <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+                <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+
+                <!-- 这里同样支持 laytpl 语法，如： -->
+                {{#  if(d.auth > 2){ }}
+                <a class="layui-btn layui-btn-xs" lay-event="check">审核</a>
+                {{#  } }}
+            </script>
+        </div>
+    </div>
+</div>
+<script src="/static/layui/layui.all.js"></script>
+<script>
+    //JavaScript代码区域
+    var element = layui.element;
+    var $ = layui.jquery;
+    var table = layui.table;
+    var layer = layui.layer; // 弹窗
+    //第一个实例
+    table.render({
+        elem: '#demo'
+        , height: 450
+        , url: '/api/article/page' //数据接口
+        , page: true //开启分页
+        , cols: [[ //表头
+            {field: 'id', title: 'ID', width: 80, fixed: 'left'}
+            , {field: 'title', title: '标题', width: 300}
+            , {field: 'cid', title: '类别', width: 80}
+            , {field: 'author', title: '作者', width: 150}
+            , {field: 'origin', title: '来源', width: 150}
+            , {field: 'hits', title: '点击量', width: 80}
+            , {fixed: 'right', width: 150, align: 'center', toolbar: '#barDemo'}
+        ]],
+        limits: [10, 20, 30, 40, 50],
+        request: {
+            pageName: 'pi' //页码的参数名称，默认：page
+            , limitName: 'ps' //每页数据量的参数名，默认：limit
+        },
+        response: {
+            // statusName: 'status' //规定数据状态的字段名称，默认：code
+            statusCode: 200 //规定成功的状态码，默认：0
+            // , msgName: 'hint' //规定状态信息的字段名称，默认：msg
+            // , countName: 'total' //规定数据总数的字段名称，默认：count
+            // , dataName: 'rows' //规定数据列表的字段名称，默认：data
+        },
+        parseData: function (resp) { //res 即为原始返回的数据
+            return {
+                "code": resp.code, //解析接口状态
+                "msg": resp.msg, //解析提示文本
+                "count": resp.data.count, //解析数据长度
+                "data": resp.data.items //解析数据列表
+            };
+        }
+    });
+    //工具条事件
+    table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+        var data = obj.data; //获得当前行数据
+        var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+        var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+        if (layEvent === 'del') { //删除
+            layer.confirm('真的删除行么', function (index) {
+                obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                layer.close(index);
+                //向服务端发送删除指令
+                $.get(
+                    "/admin/article/del/" + data.id,
+                    { token: localStorage.getItem("token") },
+                    function (resp) {
+                        if (resp.code == 200) {
+                            layer.msg("删除成功", { icon: 1 }, function () {
+                                init(1, 2)
+                            })
+                        } else {
+                            layer.msg(resp.msg)
+                            console.log(resp)
+                        }
+                    }, "json")
+            });
+        } else if (layEvent === 'edit') { //编辑
+            //do something
+
+            //同步更新缓存对应的值
+            obj.update({
+                username: '123'
+                , title: 'xxx'
+            });
+        } else if (layEvent === 'LAYTABLE_TIPS') {
+            layer.alert('Hi，头部工具栏扩展的右侧图标。');
+        }
+    });
+
+    function del(id) {
+        console.log(id)
+        // $.post("url", data,
+        //     function(data, textStatus, jqXHR) {
+
+        //     },
+        //     "dataType"
+        // );
+    }
+</script>
+</body>
+
+</html>

@@ -129,6 +129,42 @@ func UserAdd(ctx echo.Context) error {
 	return ctx.JSON(utils.Succ("添加成功"))
 }
 
+// UserEdit 用户编辑
+func UserEdit(ctx echo.Context) error {
+	// 写一个容器装前端穿过来的数据
+	ipt := model.User{}
+	// 接收前端数据并装到ipt容器里
+	err := ctx.Bind(&ipt)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入数据有误", err.Error()))
+	}
+	// 验证信息
+	if ipt.Name == "" {
+		return ctx.JSON(utils.ErrIpt("用户名不能为空"))
+	}
+	// 提交数据到数据库
+	err = model.UserEdit(&ipt)
+	if err != nil {
+		return ctx.JSON(utils.Fail("修改失败", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("修改成功"))
+}
+
+// UserGet 通过id查询用户
+func UserGet(ctx echo.Context) error {
+	// 获取浏览器path路径的参数 并转换为int64
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		return ctx.JSON(utils.ErrIpt("输入有误", err.Error()))
+	}
+	// 通过id查找数据库
+	mod, err := model.UserGet(id)
+	if err != nil {
+		return ctx.JSON(utils.ErrOpt("未查询到数据", err.Error()))
+	}
+	return ctx.JSON(utils.Succ("用户数据", mod))
+}
+
 type Page struct {
 	Pi int `json:"pi"`
 	Ps int `json:"ps"`

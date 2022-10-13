@@ -19,7 +19,8 @@
             <ul class="layui-nav layui-layout-right">
                 <li class="layui-nav-item">
                     <a href="javascript:;">
-                        <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img"> 涵有闲
+                        <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img">
+                        涵有闲
                     </a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">基本资料</a></dd>
@@ -84,11 +85,11 @@
                                 <a href="javascript:del(23);" class="layui-btn layui-btn-danger layui-btn-xs">删除</a>
                             </td>
                         </tr>
-                        <tfoot>
-                            <tr>
-                                <td id="ctn-page" colspan="4" style="text-align:center"></td>
-                            </tr>
-                        </tfoot>
+                    <tfoot>
+                        <tr>
+                            <td id="ctn-page" colspan="4" style="text-align:center"></td>
+                        </tr>
+                    </tfoot>
                 </table>
             </div>
         </div>
@@ -114,12 +115,12 @@
         var layer = layui.layer;
         var element = layui.element;
         var laypage = layui.laypage
-        init(1,6)
+        init(1, 6)
 
-        function init(pi,ps) {
-            $.get("/api/class/page",{pi:pi,ps:ps},function (resp) {
+        function init(pi, ps) {
+            $.get("/api/class/page", { pi: pi, ps: ps }, function (resp) {
                 if (resp.code == 200) {
-                    var html = template("tpl-class",resp.data)
+                    var html = template("tpl-class", resp.data)
                     // console.log(html)
                     $("#ctn-class").html(html)
                     laypage.render({
@@ -127,9 +128,9 @@
                         count: resp.data.count, //数据总数，从服务端得到
                         limit: ps,  // 每页多少条
                         curr: pi, // 当前页
-                        layout: ['prev', 'page', 'next', 'skip', 'count','limit'],
-                        limits:[6, 12, 18, 24, 30],
-                        jump: function(obj, first) {
+                        layout: ['prev', 'page', 'next', 'skip', 'count', 'limit'],
+                        limits: [6, 12, 18, 24, 30],
+                        jump: function (obj, first) {
                             //obj包含了当前分页的所有参数，比如：
                             console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。pi
                             console.log(obj.limit); //得到每页显示的条数 ps
@@ -137,7 +138,7 @@
                             //首次不执行
                             if (!first) {
                                 //do something
-                                init(obj.curr,obj.limit)
+                                init(obj.curr, obj.limit)
                             }
                         }
                     });
@@ -145,27 +146,27 @@
                     alert(resp.msg)
                     console.log(resp)
                 }
-            },"json")
+            }, "json")
         }
 
         function del(id) {
             // console.log(id)
             layer.confirm('您确定要删除嘛？', {
-                btn: ['确定','取消'] //按钮
-            }, function(){
+                btn: ['确定', '取消'] //按钮
+            }, function () {
                 $.get(
                     "/admin/class/del/" + id + "?token=" + localStorage.getItem("token"),
                     {},
-                    function (resp){
+                    function (resp) {
                         if (resp.code == 200) {
-                            layer.msg("删除成功", {icon: 1},function () {
-                                init(1,6)
+                            layer.msg("删除成功", { icon: 1 }, function () {
+                                init(1, 6)
                             })
                         } else {
                             layer.msg(resp.msg)
                             console.log(resp)
                         }
-                    },"json")
+                    }, "json")
             });
         }
     </script>

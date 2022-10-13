@@ -89,6 +89,29 @@ func UserAdd(mod *User) error {
 	return nil
 }
 
+// UserEdit 修改用户信息 通过id 修改内容 用户名 邮箱 电话号码
+func UserEdit(mod *User) error {
+	//tx, _ := Db.Begin() // 开启事务 保险箱
+	tx, _ := Db.Beginx()
+	//result, err := tx.Exec("update user set `name` = ?,email = ?,phone = ? where id = ?", mod.Name, mod.Email, mod.Phone, mod.Id)
+	result, err := tx.NamedExec("update user set `name`=:name,phone=:phone,email=:email where id=:id", mod)
+	if err != nil {
+		tx.Rollback() // 回滚 撤回上一步操作
+		return err
+	}
+	// 返回 结果受影响行数
+	rows, _ := result.RowsAffected()
+	if rows < 1 {
+		tx.Rollback()
+		// 返回此报错的两种原因:
+		// where条件不成立
+		// 更新数据与原数据保持一致
+		return errors.New("rows affected < 1")
+	}
+	tx.Commit() // 提交命令
+	return nil
+}
+
 // UserExist 判断用户是否存在
 func UserExist(num string) bool {
 	mod := User{}
@@ -97,4 +120,11 @@ func UserExist(num string) bool {
 		return false
 	}
 	return true
+}
+
+// UserGet 通过id查询用户信息
+func UserGet(id int64) (*User, error) {
+	mod := &User{}
+	err := Db.Get(mod, "select * from user where id = ? limit 1", id)
+	return mod, err
 }

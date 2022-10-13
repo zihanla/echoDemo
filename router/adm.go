@@ -15,4 +15,7 @@ func AdmRouter(adm *echo.Group) {
 	adm.GET("/user/page", control.UserPage)
 	adm.GET("/user/del/:id", control.UserDel)
 	adm.POST("/user/add", control.UserAdd)
+	adm.GET("/user/get/:id", control.UserGet)
+	adm.POST("/user/edit", control.UserEdit)
+	adm.GET("/article/del/:id", control.ArticleDel)
 }

@@ -1,6 +1,10 @@
 package model
 
-import "errors"
+import (
+	"errors"
+
+	"github.com/jmoiron/sqlx"
+)
 
 // Class 结构体
 type Class struct {
@@ -97,4 +101,25 @@ func ClassDel(id int64) error {
 	// 提交 保存正确的操作
 	tx.Commit()
 	return nil
+}
+
+// ClassNameById 通过id 查分类名
+func ClassNameById(id int64) string {
+	name := ""
+	Db.Get(&name, "select name from class where id = ?", id)
+	return name
+}
+
+// ClassNameByIds 查询分类 集合
+func ClassNameByIds(ids []int64) map[int64]string {
+	query, args, _ := sqlx.In("select * from class where id in (?)", ids)
+	query = Db.Rebind(query)
+	mods := make([]Class, 0, len(ids))
+	Db.Select(&mods, query, args...)
+	mp := make(map[int64]string)
+	for i := 0; i < len(mods); i++ {
+		mp[mods[i].Id] = mods[i].Name
+	}
+	//log.Println(mp)
+	return mp
 }

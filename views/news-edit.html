@@ -15,132 +15,149 @@
 </head>
 
 <body class="layui-layout-body">
-    <div class="layui-layout layui-layout-admin">
-        <div class="layui-header">
-            <div class="layui-logo">layui 后台布局</div>
-            <!-- 头部区域（可配合layui已有的水平导航） -->
-            <ul class="layui-nav layui-layout-left">
-                <li class="layui-nav-item"><a href="index.html">控制台</a></li>
-            </ul>
-            <ul class="layui-nav layui-layout-right">
-                <li class="layui-nav-item">
-                    <a href="javascript:;">
-                        <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img"> 涵有闲
-                    </a>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo">layui 后台布局</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="index.html">控制台</a></li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="https://blog.hxcpl.cn/upload/2022/09/%E5%A4%B4%E5%83%8F2.jpg" class="layui-nav-img"> 涵有闲
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">基本资料</a></dd>
+                    <dd><a href="javascript:;">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="javascript:;">退了</a></li>
+        </ul>
+    </div>
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="" href="javascript:;">新闻管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">基本资料</a></dd>
-                        <dd><a href="javascript:;">安全设置</a></dd>
+                        <dd><a href="news-list.html">新闻列表</a></dd>
+                        <dd><a href="news-add.html">添加新闻</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item"><a href="javascript:;">退了</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">类别管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="class-list.html">类别列表</a></dd>
+                        <dd><a href="class-add.html">添加类别</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">用户管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="user-list.html">用户列表</a></dd>
+                        <dd><a href="user-add.html">添加用户</a></dd>
+                    </dl>
+                </li>
             </ul>
         </div>
-        <div class="layui-side layui-bg-black">
-            <div class="layui-side-scroll">
-                <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
-                <ul class="layui-nav layui-nav-tree" lay-filter="test">
-                    <li class="layui-nav-item layui-nav-itemed">
-                        <a class="" href="javascript:;">新闻管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="news-list.html">新闻列表</a></dd>
-                            <dd><a href="news-add.html">添加新闻</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">类别管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="class-list.html">类别列表</a></dd>
-                            <dd><a href="class-add.html">添加类别</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item">
-                        <a href="javascript:;">用户管理</a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="user-list.html">用户列表</a></dd>
-                            <dd><a href="user-add.html">添加用户</a></dd>
-                        </dl>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="layui-body">
-            <!-- 内容主体区域 -->
-            <div style="padding: 15px;">
-                <form class="layui-form" action="">
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">标题</label>
-                        <div class="layui-input-block">
-                            <input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off" class="layui-input">
-                        </div>
+    </div>
+    <div class="layui-body">
+        <!-- 内容主体区域 -->
+        <div style="padding: 15px;">
+            <form class="layui-form" action="">
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标题</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="title" required lay-verify="required" placeholder="请输入标题"
+                               autocomplete="off" class="layui-input">
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">类别</label>
-                        <div class="layui-input-inline">
-                            <select name="class" lay-verify="required">
-                              <option value=""></option>
-                              <option value="0">北京</option>
-                              <option value="1">上海</option>
-                              <option value="2">广州</option>
-                              <option value="3">深圳</option>
-                              <option value="4">杭州</option>
-                            </select>
-                        </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">类别</label>
+                    <div class="layui-input-inline">
+                        <select name="class" lay-verify="required">
+                            <option value=""></option>
+                            <option value="0">北京</option>
+                            <option value="1">上海</option>
+                            <option value="2">广州</option>
+                            <option value="3">深圳</option>
+                            <option value="4">杭州</option>
+                        </select>
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">来源</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="origin" required lay-verify="required" placeholder="请输入来源" autocomplete="off" class="layui-input">
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">来源</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="origin" required lay-verify="required" placeholder="请输入来源"
+                               autocomplete="off" class="layui-input">
                     </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">作者</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="author" required lay-verify="required" placeholder="请输入作者" autocomplete="off" class="layui-input">
-                        </div>
-                        <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                    <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">作者</label>
+                    <div class="layui-input-inline">
+                        <input type="text" name="author" required lay-verify="required" placeholder="请输入作者"
+                               autocomplete="off" class="layui-input">
                     </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">文本域</label>
-                        <div class="layui-input-block">
-                            <textarea class="layui-textarea" name="content" id="editor" style="resize:none;min-height:400px;max-width:1100px;"></textarea>
-                        </div>
+                    <div class="layui-form-mid layui-word-aux">辅助文字</div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">文本域</label>
+                    <div class="layui-input-block">
+                        <textarea class="layui-textarea" name="content" id="editor"
+                                  style="resize:none;min-height:400px;max-width:1100px;"></textarea>
                     </div>
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit lay-filter="commit">立即提交</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                        </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="commit">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
         </div>
     </div>
-    <script type="text/javascript" src="/static/umeditor/third-party/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/umeditor/third-party/template.min.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/static/umeditor/umeditor.config.js"></script>
-    <script type="text/javascript" charset="utf-8" src="/static/umeditor/umeditor.min.js"></script>
-    <script type="text/javascript" src="/static/umeditor/lang/zh-cn/zh-cn.js"></script>
-    <script src="/static/layui/layui.js"></script>
-    <script>
-        //实例化编辑器
-        var um = UM.getEditor('editor', {
-            autoHeightEnabled: false,
-            'enterTag': 'br'
-        });
+</div>
+<script type="text/javascript" src="/static/umeditor/third-party/jquery.min.js"></script>
+<script type="text/javascript" src="/static/umeditor/third-party/template.min.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/umeditor/umeditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="/static/umeditor/umeditor.min.js"></script>
+<script type="text/javascript" src="/static/umeditor/lang/zh-cn/zh-cn.js"></script>
+<script src="/static/layui/layui.all.js"></script>
+<script>
+    //实例化编辑器
+    var um = UM.getEditor('editor', {
+        autoHeightEnabled: false,
+        'enterTag': 'br'
+    });
 
-        //JavaScript代码区域
-        layui.use(['element', 'form'], function() {
-            var element = layui.element;
-            var form = layui.form;
+    //JavaScript代码区域
+    // 加载下拉框
+    function init() {
+        $.get("/api/class/all",{},function (resp){
+            if (resp.code == 200) {
+                let html =[];
+                $.each(resp.data,function (index,item){
+                    html.push('<option value="'+item.id+'">'+item.name+'</option>')
+                })
+                console.log(html)
+            }
+        },"json")
+    }
 
-            //监听提交
-            form.on('submit(commit)', function(data) {
-                layer.msg(JSON.stringify(data.field));
-                return false;
-            });
-        });
-    </script>
+    // layui部分
+    var element = layui.element;
+    var form = layui.form;
+
+    //监听提交
+    form.on('submit(commit)', function (data) {
+        layer.msg(JSON.stringify(data.field));
+        return false;
+    });
+    init()
+</script>
 </body>
 
 </html>
